@@ -1,0 +1,20 @@
+---
+- name: install basic packages
+  sudo: yes
+  apt:
+    pkg: "{{item}}"
+    state: present
+  with_items:
+    - git
+    - python-pip
+- name: install dotfiles manager
+  sudo: yes
+  pip: name=dotfiles
+
+- name: install dot files
+  git: repo=https://github.com/endorno/dotfiles.git dest={{ ansible_env.HOME }}/.dotfiles accept_hostkey=yes
+
+- name: link dotfilesrc
+  command: ln -snf {{ ansible_env.HOME }}/.dotfiles/dotfilesrc {{ ansible_env.HOME}}/.dotfilesrc
+- name: link(sync) dotfiles
+  command: dotfiles -s

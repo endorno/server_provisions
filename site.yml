@@ -1,0 +1,24 @@
+- hosts: test-servers
+  become: no
+  tasks:
+    - name: update apt-get
+      sudo: yes
+      apt: update_cache=yes
+    - name: install basic packages
+      sudo: yes
+      apt:
+        pkg: "{{item}}"
+        state: present
+      with_items:
+        - git
+        - tmux
+        - zsh
+        - vim
+  roles:
+     - role: avanov.pyenv
+       pyenv_path: "/home/vagrant/.pyenv"
+       pyenv_owner: vagrant
+       pyenv_python_versions:
+         - "miniconda3-3.16.0"
+       pyenv_virtualenvs: []
+     - role: dotfiles
