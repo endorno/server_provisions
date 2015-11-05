@@ -51,6 +51,15 @@
               regexp="\.pyenvrc$"
               line="source {{ pyenv_path }}/.pyenvrc"
               state=present
+              create=yes
+
+- name: Modify .zshrc
+  sudo: no
+  lineinfile: dest="/home/{{ pyenv_owner }}/.zsh/.zshrc.local"
+              regexp="\.pyenvrc$"
+              line="source {{ pyenv_path }}/.pyenvrc"
+              state=present
+              create=yes
 
 - name: Install Python interpreters {{ pyenv_python_versions }}
   sudo: no
