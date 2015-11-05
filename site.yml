@@ -1,5 +1,7 @@
 - hosts: test-servers
   become: no
+  vars:
+    user_name: vagrant
   tasks:
     - name: update apt-get
       sudo: yes
@@ -16,9 +18,11 @@
         - vim
   roles:
      - role: avanov.pyenv
-       pyenv_path: "/home/vagrant/.pyenv"
-       pyenv_owner: vagrant
+       sudo: yes
+       pyenv_path: "/home/{{ user_name }}/.pyenv"
+       pyenv_owner: "{{ user_name }}"
        pyenv_python_versions:
          - "miniconda3-3.16.0"
        pyenv_virtualenvs: []
      - role: dotfiles
+     - role: zsh

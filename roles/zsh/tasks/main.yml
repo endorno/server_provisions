@@ -1,0 +1,10 @@
+- name: install basic packages
+  sudo: yes
+  apt:
+    pkg: "{{item}}"
+    state: present
+  with_items:
+    - zsh
+- name: set default sh as zsh
+  sudo: yes
+  shell: "chsh -s `which zsh` {{ user_name }}"
