@@ -16,13 +16,29 @@
         - tmux
         - zsh
         - vim
+    - name: theano setting for gpu
+      when: with_gpu == "yes"
+      lineinfile: >-
+        dest='/home/{{ user_name }}/.zsh/.zshrc.local'
+        regexp='{{ item.regexp }}'
+        line='{{ item.line }}'
+        state=present
+      with_items:
+      - regexp: 'export\ CUDA_HOME'
+        line: 'export CUDA_HOME=/usr/local/cuda'
+      - regexp: 'export\ PATH=\$\{CUDA_HOME\}'
+        line: 'export PATH=${CUDA_HOME}/bin:${PATH}'
+      - regexp: 'export\ LD_LIBRARY_PATH=\$\{CUDA_HOME\}'
+        line: 'export LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}'
   roles:
      - role: avanov.pyenv
        sudo: yes
        pyenv_path: "/home/{{ user_name }}/.pyenv"
        pyenv_owner: "{{ user_name }}"
        pyenv_python_versions:
-         - "miniconda3-3.16.0"
+          - "anaconda3-2.4.0"
+         # - "miniconda3-3.16.0"
        pyenv_virtualenvs: []
      - role: dotfiles
      - role: zsh
+

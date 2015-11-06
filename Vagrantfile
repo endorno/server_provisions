@@ -16,7 +16,7 @@ def aws_common_setting(aws, override)
     aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
     aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
 
-    aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 10 }]
+    aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 20 }]
     aws.security_groups = ["computational_resource"]
 
     override.ssh.username = "ubuntu"
@@ -63,6 +63,13 @@ Vagrant.configure(2) do |config|
       # aws.ami = "ami-936d9d93" #default ubuntu hmv
 
       aws.instance_type = "g2.2xlarge"
+    end
+    gpu.vm.provision "ansible" do |ansible|
+      ansible.extra_vars = {
+        "user_name" => "ubuntu",
+        "with_gpu" => "yes",
+      }
+      ansible.playbook = "site.yml"
     end
   end
 end
