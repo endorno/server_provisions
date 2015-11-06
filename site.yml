@@ -1,7 +1,7 @@
-- hosts: test-servers
+- hosts: all
   become: no
-  vars:
-    user_name: vagrant
+  # vars:
+    # user_name: {{ user_name }}
   tasks:
     - name: update apt-get
       sudo: yes
